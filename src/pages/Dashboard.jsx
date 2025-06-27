@@ -1,0 +1,86 @@
+
+import { Sidebar } from "@/components/sidebar"
+import { Header } from "@/components/header"
+import { StatsCards } from "@/components/stats-cards"
+import { IncomeCharts } from "@/components/income-charts"
+import { MemberTable } from "@/components/member-table"
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import supabase from '../SupabaseClient.js';
+import { BASE_URL } from '../components/Appurl.js';
+
+
+export default function Dashboard() {
+  const [statsLoading, setStatsLoading] = useState(true)
+  const [chartsLoading, setChartsLoading] = useState(true)
+  const [membersLoading, setMembersLoading] = useState(true)
+  const [members, setMembers] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
+
+  useEffect(() => {
+    const fetchMembers = async () => {
+      setMembersLoading(true);
+      const { data: sessionData } = await supabase.auth.getSession();
+      const token = sessionData?.session?.access_token;
+      if (!token) {
+        console.error('No token found');
+        setMembersLoading(false);
+        return;
+      }
+
+      try {
+        const response = await axios.get(`${BASE_URL}/api/v1/subscriptions/`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        setMembers(response.data.data);
+      } catch (error) {
+        console.error('Error fetching members:', error.response?.data || error.message);
+      } finally {
+        setMembersLoading(false);
+      }
+    };
+
+    fetchMembers();
+  }, []);
+
+
+  const handleAddMember = () => {
+    console.log("Add member clicked")
+  }
+
+  const handleViewMember = (member) => {
+    console.log("View member:", member)
+  }
+
+
+  return (
+    <div className="flex min-h-screen bg-black">
+      <Sidebar />
+      <div className="flex-1 flex flex-col overflow-hidden">
+        <Header />
+        <main className="flex-1 overflow-auto">
+          <div className="p-4 lg:p-8 space-y-8">
+            {/* <StatsCards stats={sampleStats} loading={statsLoading} />
+            <IncomeCharts
+              monthlyData={sampleMonthlyData}
+              yearlyIncome={542760}
+              totalIncome={1250000}
+              yearlyGrowth={15}
+              loading={chartsLoading}
+            /> */}
+            <MemberTable
+              members={members}
+              loading={membersLoading}
+              onAddMember={handleAddMember}
+              onViewMember={handleViewMember}
+              searchTerm={searchTerm} setSearchTerm={setSearchTerm}
+            />
+          </div>
+        </main>
+      </div>
+    </div>
+  )
+}
