@@ -171,7 +171,7 @@ export function MemberTable({
                   </TableRow>
                 ) : (
                   filteredMembers.map(({ name, frequency, endDate, status, _id }, i) => (
-                    <TableRow key={i} className="border-gray-800 hover:bg-gray-900/30">
+                    <TableRow key={i} className="border-gray-800">
                       <TableCell className="font-semibold text-white">{name}</TableCell>
                       <TableCell className="text-gray-300">{frequency} Months</TableCell>
                       <TableCell className="text-gray-300">{formatDate(endDate)}</TableCell>
