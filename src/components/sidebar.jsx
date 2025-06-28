@@ -8,11 +8,13 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 const navigationItems = [
   { name: "Dashboard", icon: Activity, active: true },
   { name: "Members", icon: Users, active: false },
-  { name: "Payments", icon: CreditCard, active: false },
-  { name: "Classes", icon: Calendar, active: false },
-  { name: "Reports", icon: TrendingUp, active: false },
 ]
-
+const logout = () => {
+  const confirmation = confirm("Are you sure you want to log out?");
+  if (confirmation) {
+    supabase.auth.signOut();
+  }
+};
 function SidebarContent() {
   return (
     <div className="flex h-full flex-col bg-black border-r border-gray-800">
@@ -22,7 +24,7 @@ function SidebarContent() {
             <Activity className="h-6 w-6 text-white" />
           </div>
           <div>
-            <h1 className="text-xl font-bold text-white">FitGym Pro</h1>
+            <h1 className="text-xl font-bold text-white">MuscleBoard</h1>
             <p className="text-xs text-gray-400">Admin Dashboard</p>
           </div>
         </div>
@@ -53,18 +55,18 @@ function SidebarContent() {
           </Avatar>
           <div className="flex-1 min-w-0">
             <p className="text-sm font-medium text-white truncate">Admin User</p>
-            <p className="text-xs text-gray-400 truncate">admin@fitgym.com</p>
+            <p className="text-xs text-gray-400 truncate">admin@muscleboard.com</p>
           </div>
           <Button size="sm" variant="ghost" className="h-8 w-8 p-0 text-gray-400 hover:text-white">
-            <Settings className="h-4 w-4" />
+            {/* <Settings className="h-4 w-4" /> */}
           </Button>
         </div>
 
         <Button
           variant="ghost"
-          className="w-full justify-start h-10 px-4 rounded-lg text-gray-300 hover:bg-gray-900 hover:text-white border border-gray-800"
+          className="w-full justify-start h-10 px-4 rounded-lg text-gray-300 hover:bg-red-600 hover:text-white border border-gray-800 hover:border-red-500"
         >
-          <LogOut className="mr-3 h-4 w-4" />
+          <LogOut className="mr-3 h-4 w-4" onClick={logout}/>
           <span className="font-medium">Log Out</span>
         </Button>
       </div>

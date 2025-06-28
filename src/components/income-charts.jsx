@@ -19,9 +19,8 @@ function ChartSkeleton() {
 
 export function IncomeCharts({
   monthlyData = [],
-  yearlyIncome = 0,
-  totalIncome = 0,
-  yearlyGrowth = 0,
+  yearlyIncome,
+  totalIncome,
   loading = false,
 }) {
   if (loading) {
@@ -86,7 +85,7 @@ export function IncomeCharts({
           <CardContent>
             <div className="text-4xl font-bold text-white">${yearlyIncome.toLocaleString()}</div>
             <div className="flex items-center gap-2 mt-3">
-              <div
+              {/* <div
                 className={`flex items-center gap-1 px-3 py-1 rounded-full text-sm font-medium ${
                   yearlyGrowth >= 0
                     ? "bg-green-500/20 text-green-400 border border-green-500/30"
@@ -96,8 +95,8 @@ export function IncomeCharts({
                 <TrendingUp className={`h-3 w-3 ${yearlyGrowth >= 0 ? "text-green-400" : "text-red-400 rotate-180"}`} />
                 {yearlyGrowth > 0 ? "+" : ""}
                 {yearlyGrowth}%
-              </div>
-              <span className="text-sm text-gray-400">compared to 2023</span>
+              </div> */}
+              {/* <span className="text-sm text-gray-400">compared to 2023</span> */}
             </div>
           </CardContent>
         </Card>
@@ -117,8 +116,8 @@ export function IncomeCharts({
           <CardContent>
             <div className="text-4xl font-bold text-white">${totalIncome.toLocaleString()}</div>
             <div className="flex items-center gap-2 mt-3">
-              <div className="px-3 py-1 rounded-full bg-gray-800 text-gray-400 text-sm font-medium">Since 2020</div>
-              <span className="text-sm text-gray-400">gym opening</span>
+              {/* <div className="px-3 py-1 rounded-full bg-gray-800 text-gray-400 text-sm font-medium">Since 2020</div>
+              <span className="text-sm text-gray-400">gym opening</span> */}
             </div>
           </CardContent>
         </Card>

@@ -22,7 +22,19 @@ function StatsCardSkeleton() {
   )
 }
 
-export function StatsCards({ stats = {}, loading = false }) {
+export function StatsCards({ stats = {}, loading = false, members }) {
+
+  const activeCount = members.filter((m) => m.status === "active").length
+  const pendingCount = members.filter((m) => m.status === "pending").length
+  const expiringCount = members.filter((m) => m.status === "expired").length
+  const monthlyCurrentIncome = stats.currentMonthIncome
+  const monthlyPreviousIncome = stats.previousMonthIncome
+  if (monthlyPreviousIncome===0){
+    monthlyPreviousIncome+=1
+  }
+
+
+
   if (loading) {
     return (
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
@@ -34,12 +46,12 @@ export function StatsCards({ stats = {}, loading = false }) {
   }
 
   const {
-    activeMembers = 0,
-    pendingMembers = 0,
-    monthlyIncome = 0,
-    upcomingExpires = 0,
+    activeMembers = activeCount,
+    pendingMembers = pendingCount,
+    monthlyIncome = monthlyCurrentIncome,
+    upcomingExpires = expiringCount,
     activeMembersChange = 0,
-    monthlyIncomeChange = 0,
+    monthlyIncomeChange = ((monthlyCurrentIncome-monthlyPreviousIncome)/(monthlyPreviousIncome))*100,
     upcomingExpiresChange = 0,
   } = stats
 
@@ -48,37 +60,40 @@ export function StatsCards({ stats = {}, loading = false }) {
       title: "Active Members",
       value: activeMembers,
       change: `${activeMembersChange > 0 ? "+" : ""}${activeMembersChange}%`,
-      changeText: "from last month",
+      changeText: "",
       icon: UserCheck,
       iconBg: "bg-green-500",
-      positive: activeMembersChange > 0,
+      showchangebadge: false
     },
     {
       title: "Pending Members",
       value: pendingMembers,
       change: pendingMembers.toString(),
-      changeText: "awaiting approval",
+      changeText: "",
       icon: Clock,
       iconBg: "bg-amber-500",
       positive: null,
+      showchangebadge: false
     },
     {
       title: "Monthly Income",
-      value: `$${monthlyIncome.toLocaleString()}`,
+      value: `₹${monthlyIncome}`,
       change: `${monthlyIncomeChange > 0 ? "+" : ""}${monthlyIncomeChange}%`,
       changeText: "from last month",
       icon: DollarSign,
       iconBg: "bg-blue-500",
       positive: monthlyIncomeChange > 0,
+      showchangebadge: true
     },
     {
-      title: "Upcoming Expires",
+      title: "Expired Members",
       value: upcomingExpires,
       change: `${upcomingExpiresChange > 0 ? "+" : ""}${upcomingExpiresChange}%`,
       changeText: "from last month",
       icon: AlertTriangle,
       iconBg: "bg-red-500",
       positive: upcomingExpiresChange < 0,
+      showchangebadge: false
     },
   ]
 
@@ -95,7 +110,7 @@ export function StatsCards({ stats = {}, loading = false }) {
           <CardContent className="space-y-3">
             <div className="text-3xl font-bold text-white">{stat.value}</div>
             <div className="flex items-center gap-2">
-              {stat.positive !== null && (
+              {stat.showchangebadge && (
                 <div
                   className={`flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ${
                     stat.positive

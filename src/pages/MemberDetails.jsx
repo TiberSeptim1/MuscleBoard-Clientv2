@@ -5,8 +5,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
 import { ArrowLeft, Edit, Trash2, Phone, Calendar, DollarSign, Clock, User, AlertTriangle } from "lucide-react"
-
-// Skeletal Loader Component
+import { Link } from "react-router-dom";
+import supabase from '../SupabaseClient';
+import axios from 'axios';
+import { BASE_URL } from '../components/Appurl';
 const MemberDetailsSkeleton = () => {
 
     
@@ -81,7 +83,7 @@ const MemberDetailsSkeleton = () => {
   )
 }
 
-export default function MemberDetails({ destination }) {
+export default function MemberDetails({ destination='/' }) {
 
     const navigate = useNavigate();
 
@@ -89,7 +91,7 @@ export default function MemberDetails({ destination }) {
       const options = {day:'numeric', month:'short', year:'numeric'}
       return new Date(dateString).toLocaleDateString('en-US',options)
     };
-    const [member, setMember] = useState({})
+    const [member, setMember] = useState({ history: [] })
     const [loading, setLoading] = useState(false)
     const {id}= useParams();
   
@@ -251,7 +253,7 @@ export default function MemberDetails({ destination }) {
       {/* Header */}
       <div className="border-b border-gray-800 bg-gray-900/50">
         <div className="flex items-center gap-4 px-6 py-4">
-          <Button variant="ghost" size="sm" className="text-gray-400 hover:text-white">
+          <Button variant="ghost" size="sm" className="text-gray-400 hover:text-white" onClick={() => navigate(destination)}>
             <ArrowLeft className="h-4 w-4 mr-2" />
             Back
           </Button>
@@ -280,7 +282,7 @@ export default function MemberDetails({ destination }) {
                   </div>
                 </div>
                 <Badge className={getStatusColor(member.status)}>
-                  {member.status.charAt(0).toUpperCase() + member.status.slice(1)}
+                  {member.status}
                 </Badge>
               </div>
             </CardHeader>
@@ -307,7 +309,7 @@ export default function MemberDetails({ destination }) {
                     <DollarSign className="h-4 w-4" />
                     <span className="text-sm font-medium">Price</span>
                   </div>
-                  <p className="text-white font-semibold">{formatCurrency(member.price)}</p>
+                  <p className="text-white font-semibold">{(member.price)}</p>
                 </div>
 
                 <div className="space-y-2">
@@ -315,7 +317,7 @@ export default function MemberDetails({ destination }) {
                     <DollarSign className="h-4 w-4" />
                     <span className="text-sm font-medium">Fees Paid</span>
                   </div>
-                  <p className="text-white font-semibold">{formatCurrency(member.feesPaid)}</p>
+                  <p className="text-white font-semibold">{(member.feesPaid)}</p>
                 </div>
 
                 <div className="space-y-2">
@@ -331,9 +333,10 @@ export default function MemberDetails({ destination }) {
                     <User className="h-4 w-4" />
                     <span className="text-sm font-medium">Status</span>
                   </div>
-                  <Badge className={getStatusColor(member.status)}>
-                    {member.status.charAt(0).toUpperCase() + member.status.slice(1)}
-                  </Badge>
+                  <Badge className={`${getStatusColor(member.status)} text-xs`}>
+  {member.status}
+</Badge>
+
                 </div>
               </div>
 
@@ -346,7 +349,7 @@ export default function MemberDetails({ destination }) {
                   Edit Member
                   </Link>
                 </Button>
-                <Button onClick={handleDeleteSubscription} variant="destructive">
+                <Button onClick={handleDeleteSubscription}>
                   <Trash2 className="h-4 w-4 mr-2" />
                   Delete Member
                 </Button>
@@ -360,7 +363,7 @@ export default function MemberDetails({ destination }) {
               <div className="flex justify-between items-center">
                 <CardTitle className="text-white">Membership History</CardTitle>
                 {member.history.length > 0 && (
-                  <Button onClick={handleDeleteAllHistory} variant="destructive" size="sm">
+                  <Button onClick={handleDeleteAllHistory} size="sm">
                     <AlertTriangle className="h-4 w-4 mr-2" />
                     Delete All History
                   </Button>
@@ -390,31 +393,33 @@ export default function MemberDetails({ destination }) {
 
                           <div className="space-y-1">
                             <span className="text-xs text-gray-400 font-medium">PRICE</span>
-                            <p className="text-white text-sm font-semibold">{formatCurrency(price)}</p>
+                            <p className="text-white text-sm font-semibold">{(price)}</p>
                           </div>
 
                           <div className="space-y-1">
                             <span className="text-xs text-gray-400 font-medium">FEES PAID</span>
-                            <p className="text-white text-sm font-semibold">{formatCurrency(feesPaid)}</p>
+                            <p className="text-white text-sm font-semibold">{(feesPaid)}</p>
                           </div>
 
                           <div className="space-y-1">
                             <span className="text-xs text-gray-400 font-medium">DURATION</span>
-                            <p className="text-white text-sm">{months} months</p>
+                            <p className="text-white text-sm">{frequency} months</p>
                           </div>
 
                           <div className="space-y-1">
                             <span className="text-xs text-gray-400 font-medium">STATUS</span>
+
                             <div>
-                              <Badge className={`${getStatusColor(status)} text-xs`}>
-                                {status.charAt(0).toUpperCase() + status.slice(1)}
-                              </Badge>
+                            <Badge className={`${getStatusColor(member.status)} text-xs`}>
+                              {member.status}
+                            </Badge>
+
                             </div>
                           </div>
                         </div>
 
                         <div className="flex justify-end mt-4">
-                          <Button onClick={()=>handleDeleteHistoryById(_id)} variant="destructive" size="sm">
+                          <Button onClick={()=>handleDeleteHistoryById(_id)} size="sm">
                             <Trash2 className="h-4 w-4 mr-1" />
                             Delete
                           </Button>

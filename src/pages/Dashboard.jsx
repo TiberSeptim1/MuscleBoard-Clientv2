@@ -11,9 +11,10 @@ import { BASE_URL } from '../components/Appurl.js';
 
 
 export default function Dashboard() {
-  const [statsLoading, setStatsLoading] = useState(true)
-  const [chartsLoading, setChartsLoading] = useState(true)
-  const [membersLoading, setMembersLoading] = useState(true)
+  const [statsLoading, setStatsLoading] = useState(true);
+  const [chartsLoading, setChartsLoading] = useState(true);
+  const [membersLoading, setMembersLoading] = useState(true);
+  const [stats, setStats] = useState([]);
   const [members, setMembers] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -43,17 +44,37 @@ export default function Dashboard() {
       }
     };
 
-    fetchMembers();
+    const fetchStats = async () => {
+      setStatsLoading(true);
+      const { data: sessionData } = await supabase.auth.getSession();
+      const token = sessionData?.session?.access_token;
+      if (!token) {
+        console.error('No token found');
+        setStatsLoading(false);
+        return;
+      }
+
+      try {
+        const response = await axios.get(`${BASE_URL}/api/v1/subscriptions/stats`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        setStats(response.data);
+      } catch (error) {
+        console.error('Error fetching:', error.response?.data || error.message);
+      } finally {
+        setStatsLoading(false);
+      }
+    };
+    const fetchAll = async()=>{
+      await Promise.all([fetchMembers(), fetchStats()]);
+    };
+    fetchAll();
   }, []);
 
 
-  const handleAddMember = () => {
-    console.log("Add member clicked")
-  }
-
-  const handleViewMember = (member) => {
-    console.log("View member:", member)
-  }
 
 
   return (
@@ -63,19 +84,16 @@ export default function Dashboard() {
         <Header />
         <main className="flex-1 overflow-auto">
           <div className="p-4 lg:p-8 space-y-8">
-            {/* <StatsCards stats={sampleStats} loading={statsLoading} />
+            <StatsCards members={members} loading={membersLoading} stats={stats} />
             <IncomeCharts
-              monthlyData={sampleMonthlyData}
-              yearlyIncome={542760}
-              totalIncome={1250000}
-              yearlyGrowth={15}
-              loading={chartsLoading}
-            /> */}
+              monthlyData={stats.monthlyData}
+              yearlyIncome={stats.yearlyIncome}
+              totalIncome={stats.overallIncome}
+              loading={statsLoading}
+            />
             <MemberTable
               members={members}
               loading={membersLoading}
-              onAddMember={handleAddMember}
-              onViewMember={handleViewMember}
               searchTerm={searchTerm} setSearchTerm={setSearchTerm}
             />
           </div>

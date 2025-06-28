@@ -9,66 +9,124 @@ import { Calendar } from "@/components/ui/calendar"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { cn } from "@/lib/utils"
 import axios from 'axios';
-import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react'
+import { useNavigate, useParams } from 'react-router-dom';
 import supabase from '../SupabaseClient.js';
 import { BASE_URL } from '../components/Appurl.js';
 
-export default function CreateSub({destination='/'}) {
-    const navigate = useNavigate();
-    const [loading, setLoading] = useState(false)
-    const [formData, setFormData]=useState({
-      name:'',
-      price:'',
-      frequency:'',
-      startDate:'',
-      feesPaid:'',
-      contact:'',
-    })
-  
-    const handleChange = (e)=>{
-      const {name , value} = e.target;
-      setFormData((prev)=>({
-        ...prev,
-        [name]:value
-      }));
-    };
-  
-    const handleSubmit = async (e)=>{
-      e.preventDefault()
+export default function Edit({destination='/'}) {
+
+  const formatDate = (dateString) => {
+    if (!dateString) return '';
+    return new Date(dateString).toISOString().split('T')[0];
+  };
+
+    const {id}=useParams();
+    const [member, setMember] = useState({})
+    useEffect(()=>{
+        setLoading(true);
+        const fetchMembers = async () => {
+          setLoading(true);
       
-      setLoading(true);
-      const {data:sessionData} = await supabase.auth.getSession();
-      const token = sessionData?.session?.access_token;
-      const userId = sessionData?.session?.user?.id;
+          const { data: sessionData } = await supabase.auth.getSession();
+          const token = sessionData?.session?.access_token;
+      
+          if (!token) {
+            console.error('No token found');
+            setLoading(false);
+            return;
+          }
+      
+          try {
+            const response = await axios.get(`${BASE_URL}/api/v1/subscriptions/history/${id}`, {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            });
+      
+            setMember(response.data.data);
+          } catch (error) {
+            console.error('Error fetching member:', error.response?.data || error.message);
+          } finally {
+            setLoading(false);
+          }
+        };
+      
+        fetchMembers();
+        
+      },[id]);
+
+      console.log(member.name)
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false)
+
   
-      const data = {...formData,
-        "userId":userId,
-      }
-  
-      if(!token){
-        console.error("no token")
-        setLoading(false);
-        return;
-      }
-      axios
-      .post(`${BASE_URL}/api/v1/subscriptions/`, data,{
-        headers:{
-          Authorization: `Bearer ${token}`,
-          'Content-Type':'application/json',
-        }
-      })
-      .then (()=>{
-        setLoading(false);
-        navigate('/')
-      })
-      .catch((error)=>{
-        setLoading(false);
-        console.log(error); 
-      })
+  const [formData, setFormData]=useState({
+          name:'',
+          price:'',
+          frequency:'',
+          startDate:'',
+          feesPaid:'',
+          contact:'',
+  })
+
+  useEffect(()=>{
+    setFormData({
+        name:member.name||'',
+        price:member.price||'',
+        frequency:member.frequency||'',
+        startDate:formatDate(member.startDate)||'',
+        feesPaid:member.feesPaid||'',
+        contact:member.contact||'',
+        
     }
+    )
+  },[member]);
+  const handleChange = (e)=>{
+    const {name , value} = e.target;
+    setFormData((prev)=>({
+      ...prev,
+      [name]:value
+    }));
+  };
+
+  const handleSubmit = async (e)=>{
+    e.preventDefault()
     
-  return (
+    setLoading(true);
+    const {data:sessionData} = await supabase.auth.getSession();
+    const token = sessionData?.session?.access_token;
+    const userId = sessionData?.session?.user?.id;
+    console.log(userId)
+
+    const data = {...formData,
+      "userId":userId,
+    }
+
+    if(!token){
+      console.error("no token")
+      setLoading(false);
+      return;
+    }
+    axios
+    .put(`${BASE_URL}/api/v1/subscriptions/${id}`, data,{
+      headers:{
+        Authorization: `Bearer ${token}`,
+        'Content-Type':'application/json',
+      }
+    })
+    .then (()=>{
+      setLoading(false);
+      navigate(`/members/details/${member._id}`)
+    })
+    .catch((error)=>{
+      setLoading(false);
+      console.log(error); 
+    })
+  }
+  
+    
+ return (
     <div className="min-h-screen bg-gray-950 text-white">
       {/* Header */}
       <div className="border-b border-gray-800 bg-gray-900/50">
@@ -78,7 +136,7 @@ export default function CreateSub({destination='/'}) {
             Back
           </Button>
           <div className="text-center">
-            <h1 className="text-2xl font-bold">Create New Member</h1>
+            <h1 className="text-2xl font-bold " >Edit or Renew Member</h1>
             
           </div>
         </div>
@@ -212,12 +270,12 @@ export default function CreateSub({destination='/'}) {
                     {loading ? (
                       <>
                         <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                        Creating Member...
+                        Saving Member...
                       </>
                     ) : (
                       <>
                         <UserPlus className="h-4 w-4 mr-2" />
-                        Create Member
+                        Save
                       </>
                     )}
                   </Button>

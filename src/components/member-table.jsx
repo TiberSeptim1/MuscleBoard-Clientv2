@@ -1,4 +1,4 @@
-// import { Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useState } from "react"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -72,9 +72,6 @@ function getStatusBadge(status) {
 export function MemberTable({
   members,
   loading,
-  onAddMember = () => {},
-  onViewMember = () => {},
-  onSearchChange = () => {},
   searchTerm, setSearchTerm
 }) {
 
@@ -83,11 +80,6 @@ export function MemberTable({
     return <TableSkeleton />
   }
 
-  const handleSearchChange = (e) => {
-    const value = e.target.value
-    setLocalSearchTerm(value)
-    onSearchChange(value)
-  }
 
   const filteredMembers = members.filter((member) =>
     member.name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -125,9 +117,11 @@ export function MemberTable({
       </Card>
 
       <div className="flex justify-end">
-        <Button onClick={onAddMember} className="bg-blue-500 hover:bg-blue-600 text-white font-medium px-6 py-2">
+        <Button className="bg-blue-500 hover:bg-blue-600 text-white font-medium px-6 py-2">
           <Plus className="h-4 w-4 mr-2" />
+          <Link to='/members/create'>
           Add New Member
+          </Link>
         </Button>
       </div>
 
@@ -183,10 +177,11 @@ export function MemberTable({
                           size="sm"
                           variant="ghost"
                           className="h-8 px-3 text-gray-400 hover:text-white hover:bg-gray-800"
-                          onClick={() => onViewMember(members)}
                         >
                           <Eye className="h-4 w-4 mr-1" />
+                          <Link to={`/members/details/${_id}`}>
                           View
+                          </Link>
                         </Button>
                       </TableCell>
                     </TableRow>
