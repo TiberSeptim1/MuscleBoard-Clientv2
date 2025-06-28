@@ -83,7 +83,7 @@ export function IncomeCharts({
             </div>
           </CardHeader>
           <CardContent>
-            <div className="text-4xl font-bold text-white">${yearlyIncome.toLocaleString()}</div>
+            <div className="text-4xl font-bold text-white">${yearlyIncome}</div>
             <div className="flex items-center gap-2 mt-3">
               {/* <div
                 className={`flex items-center gap-1 px-3 py-1 rounded-full text-sm font-medium ${
@@ -114,7 +114,7 @@ export function IncomeCharts({
             </div>
           </CardHeader>
           <CardContent>
-            <div className="text-4xl font-bold text-white">${totalIncome.toLocaleString()}</div>
+            <div className="text-4xl font-bold text-white">${totalIncome}</div>
             <div className="flex items-center gap-2 mt-3">
               {/* <div className="px-3 py-1 rounded-full bg-gray-800 text-gray-400 text-sm font-medium">Since 2020</div>
               <span className="text-sm text-gray-400">gym opening</span> */}
