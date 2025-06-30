@@ -410,8 +410,8 @@ export default function MemberDetails({ destination='/' }) {
                             <span className="text-xs text-gray-400 font-medium">STATUS</span>
 
                             <div>
-                            <Badge className={`${getStatusColor(member.status)} text-xs`}>
-                              {member.status}
+                            <Badge className={`${getStatusColor(status)} text-xs`}>
+                              {status}
                             </Badge>
 
                             </div>
