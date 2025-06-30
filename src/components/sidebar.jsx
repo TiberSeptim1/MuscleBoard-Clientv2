@@ -1,7 +1,7 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
-import { Activity, Users, CreditCard, Calendar, TrendingUp, Menu, Settings, LogOut } from "lucide-react"
+import { Activity, Users, Menu, LogOut } from "lucide-react"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
