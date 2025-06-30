@@ -85,7 +85,7 @@ export default function Dashboard() {
     <div className="flex min-h-screen bg-black">
       <Sidebar metaData={metaData}/>
       <div className="flex-1 flex flex-col overflow-hidden">
-        <Header />
+        <Header metaData={metaData} />
         <main className="flex-1 overflow-auto">
           <div className="p-4 lg:p-8 space-y-8">
             <StatsCards members={members} loading={membersLoading} stats={stats} />

@@ -73,7 +73,7 @@ export default function CreateSub({destination='/'}) {
       {/* Header */}
       <div className="border-b border-gray-800 bg-gray-900/50">
         <div className="flex items-center gap-4 px-6 py-4">
-          <Button variant="ghost" size="sm" className="text-gray-400 hover:text-white" onClick={() => navigate(destination)}>
+          <Button variant="ghost" size="sm" className="text-gray-400 hover:text-white hover:bg-gray-700" onClick={() => navigate(destination)}>
             <ArrowLeft className="h-4 w-4 mr-2" />
             Back
           </Button>
