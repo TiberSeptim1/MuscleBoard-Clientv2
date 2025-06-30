@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
 import { ArrowLeft, Edit, Trash2, Phone, Calendar, DollarSign, Clock, User, AlertTriangle } from "lucide-react"
 import { Link } from "react-router-dom";
-import supabase from '../SupabaseClient';
+import supabase from '../supabaseClient';
 import axios from 'axios';
 import { BASE_URL } from '../components/Appurl';
 const MemberDetailsSkeleton = () => {

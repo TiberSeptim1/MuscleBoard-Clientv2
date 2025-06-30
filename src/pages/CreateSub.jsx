@@ -8,7 +8,7 @@ import { UserPlus, ArrowLeft } from "lucide-react"
 import axios from 'axios';
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
-import supabase from '../SupabaseClient.js';
+import supabase from '../supabaseClient.js';
 import { BASE_URL } from '../components/Appurl.js';
 
 export default function CreateSub({destination='/'}) {

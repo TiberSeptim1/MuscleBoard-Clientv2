@@ -6,7 +6,7 @@ import { IncomeCharts } from "@/components/income-charts"
 import { MemberTable } from "@/components/member-table"
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import supabase from '../SupabaseClient.js';
+import supabase from '../supabaseClient.js';
 import { BASE_URL } from '../components/Appurl.js';
 
 

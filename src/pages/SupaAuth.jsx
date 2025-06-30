@@ -1,7 +1,7 @@
 import React from 'react'
 import { Auth } from '@supabase/auth-ui-react'
 import { ThemeSupa } from '@supabase/auth-ui-shared'
-import supabase from '../SupabaseClient.js'
+import supabase from '../supabaseClient.js'
 import { Navigate } from 'react-router-dom'
 import { useAuth } from '../components/useAuth.js'
 import { FRONTEND_URL } from '../components/Appurl.js'

@@ -9,7 +9,7 @@ import { UserPlus, ArrowLeft } from "lucide-react"
 import axios from 'axios';
 import React, { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom';
-import supabase from '../SupabaseClient.js';
+import supabase from '../supabaseClient.js';
 import { BASE_URL } from '../components/Appurl.js';
 
 export default function Edit({destination='/'}) {

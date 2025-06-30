@@ -1,6 +1,6 @@
 // import React from 'react'
 import {Routes, Route} from 'react-router-dom'
-import Dashboard from '../src/pages/dashboard.jsx'
+import Dashboard from '../src/pages/Dashboard.jsx'
 import SupaAuth from '../src/pages/MemberDetails.jsx'
 import ProtectedRoute from '../src/components/ProtectedRoutes.jsx'
 import MemberDetails from '../src/pages/MemberDetails.jsx'
