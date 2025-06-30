@@ -50,7 +50,7 @@ export function StatsCards({ stats = {}, loading = false, members }) {
     monthlyIncome = monthlyCurrentIncome,
     upcomingExpires = expiringCount,
     activeMembersChange = 0,
-    monthlyIncomeChange = ((monthlyCurrentIncome-safePreviousIncome)/(safePreviousIncome))*100,
+    monthlyIncomeChange = (((monthlyCurrentIncome-safePreviousIncome)/(safePreviousIncome))*100).toFixed(2),
     upcomingExpiresChange = 0,
   } = stats
 
