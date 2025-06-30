@@ -325,7 +325,7 @@ export default function MemberDetails({ destination='/' }) {
                     <Clock className="h-4 w-4" />
                     <span className="text-sm font-medium">Duration</span>
                   </div>
-                  <p className="text-white font-semibold">{member.months} months</p>
+                  <p className="text-white font-semibold">{member.frequency} months</p>
                 </div>
 
                 <div className="space-y-2">
