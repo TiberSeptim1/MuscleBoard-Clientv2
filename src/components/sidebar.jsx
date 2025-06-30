@@ -1,5 +1,5 @@
 "use client"
-
+import supabase from "../supabaseClient";
 import { Button } from "@/components/ui/button"
 import { Activity, Users, Menu, LogOut } from "lucide-react"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
@@ -9,10 +9,10 @@ const navigationItems = [
   { name: "Dashboard", icon: Activity, active: true },
   { name: "Members", icon: Users, active: false },
 ]
-const logout = () => {
+const logout = async () => {
   const confirmation = confirm("Are you sure you want to log out?");
   if (confirmation) {
-    supabase.auth.signOut();
+    await supabase.auth.signOut();
   }
 };
 function SidebarContent(metaData) {

@@ -1,12 +1,12 @@
 // import React from 'react'
 import {Routes, Route} from 'react-router-dom'
 import Dashboard from '../src/pages/Dashboard.jsx'
-import SupaAuth from '../src/pages/MemberDetails.jsx'
+import SupaAuth from '../src/pages/SupaAuth.jsx'
 import ProtectedRoute from '../src/components/ProtectedRoutes.jsx'
 import MemberDetails from '../src/pages/MemberDetails.jsx'
 import CreateSub from '../src/pages/CreateSub.jsx'
 import Edit from '../src/pages/Edit.jsx'
-
+import { Analytics } from "@vercel/analytics/react"
 
 const App = () => {
   return (
@@ -25,8 +25,9 @@ const App = () => {
         <MemberDetails/>
  
         </ProtectedRoute>}/>
-      <Route path='/members/edit/:id' element={<ProtectedRoute><Edit/></ProtectedRoute>}/>
+      <Route path='/members/edit/:id' element={<ProtectedRoute><Edit/></ProtectedRoute>}/>  
 </Routes>
+<Analytics />
 </>
   )
 }
