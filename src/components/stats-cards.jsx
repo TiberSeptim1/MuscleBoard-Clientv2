@@ -29,9 +29,8 @@ export function StatsCards({ stats = {}, loading = false, members }) {
   const expiringCount = members.filter((m) => m.status === "expired").length
   const monthlyCurrentIncome = stats.currentMonthIncome
   const monthlyPreviousIncome = stats.previousMonthIncome
-  if (monthlyPreviousIncome===0){
-    monthlyPreviousIncome+=1
-  }
+
+  const safePreviousIncome = monthlyPreviousIncome === 0 ? 1 : monthlyPreviousIncome
 
 
 
@@ -51,7 +50,7 @@ export function StatsCards({ stats = {}, loading = false, members }) {
     monthlyIncome = monthlyCurrentIncome,
     upcomingExpires = expiringCount,
     activeMembersChange = 0,
-    monthlyIncomeChange = ((monthlyCurrentIncome-monthlyPreviousIncome)/(monthlyPreviousIncome))*100,
+    monthlyIncomeChange = ((monthlyCurrentIncome-safePreviousIncome)/(safePreviousIncome))*100,
     upcomingExpiresChange = 0,
   } = stats
 

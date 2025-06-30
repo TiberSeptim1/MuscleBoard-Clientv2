@@ -12,10 +12,10 @@ import { BASE_URL } from '../components/Appurl.js';
 
 export default function Dashboard() {
   const [statsLoading, setStatsLoading] = useState(true);
-  const [chartsLoading, setChartsLoading] = useState(true);
   const [membersLoading, setMembersLoading] = useState(true);
   const [stats, setStats] = useState([]);
   const [members, setMembers] = useState([]);
+  const [metaData, setMetaData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
@@ -23,6 +23,10 @@ export default function Dashboard() {
       setMembersLoading(true);
       const { data: sessionData } = await supabase.auth.getSession();
       const token = sessionData?.session?.access_token;
+      const userMetaData = sessionData?.session?.user?.user_metadata;
+
+      setMetaData(userMetaData);
+
       if (!token) {
         console.error('No token found');
         setMembersLoading(false);
@@ -79,7 +83,7 @@ export default function Dashboard() {
 
   return (
     <div className="flex min-h-screen bg-black">
-      <Sidebar />
+      <Sidebar metaData={metaData}/>
       <div className="flex-1 flex flex-col overflow-hidden">
         <Header />
         <main className="flex-1 overflow-auto">
