@@ -50,12 +50,12 @@ function SidebarContent(metaData) {
       <div className="p-4 border-t border-gray-800">
         <div className="flex items-center gap-3 p-3 rounded-lg bg-gray-900 mb-3">
           <Avatar className="h-10 w-10">
-            <AvatarImage src={metaData.metaData.picture} />
+            <AvatarImage src={metaData?.metaData?.picture} />
             <AvatarFallback className="bg-blue-500 text-white font-semibold">AD</AvatarFallback>
           </Avatar>
           <div className="flex-1 min-w-0">
-            <p className="text-sm font-medium text-white truncate">{metaData.metaData.full_name}</p>
-            <p className="text-xs text-gray-400 truncate">{metaData.metaData.email}</p>
+            <p className="text-sm font-medium text-white truncate">{metaData?.metaData?.full_name}</p>
+            <p className="text-xs text-gray-400 truncate">{metaData?.metaData?.email}</p>
           </div>
           <Button size="sm" variant="ghost" className="h-8 w-8 p-0 text-gray-400 hover:text-white">
             {/* <Settings className="h-4 w-4" /> */}
@@ -91,7 +91,7 @@ export function Sidebar({metaData}) {
           </Button>
         </SheetTrigger>
         <SheetContent side="left" className="p-0 w-72 border-gray-800">
-          <SidebarContent />
+          <SidebarContent metaData={metaData}/>
         </SheetContent>
       </Sheet>
     </>
